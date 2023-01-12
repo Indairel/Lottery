@@ -4,8 +4,8 @@ import json
 white_possibles = list(range(1, 70))
 red_possibles = list(range(1, 27))
 
-tickets_per_drawing = 1000
-num_drawings = 3120
+tickets_per_drawing = 100
+num_drawings = 156
 
 total_spent = 0
 earnings = 0
@@ -64,7 +64,12 @@ def calc_win_amt (my_numbers, winning_numbers):
 
     return win_amt
 
-for drawing in range(num_drawings):
+#for drawing in range(num_drawings):
+hit_jackpot = False
+drawings = 0
+years = 0
+while True:
+    drawings += 1
     white_drawing = set(random.sample(white_possibles, k=5))
     red_drawing = random.choice(red_possibles)
 
@@ -75,10 +80,21 @@ for drawing in range(num_drawings):
         my_whites = set(random.sample(white_possibles, k=5))
         my_red = random.choice(red_possibles)
 
-    my_numbers = {'whites': my_whites, 'red': my_red}
+        my_numbers = {'whites': my_whites, 'red': my_red}
 
-    win_amt = calc_win_amt(my_numbers, winning_numbers)
-    earnings += win_amt
+        win_amt = calc_win_amt(my_numbers, winning_numbers)
+        earnings += win_amt
+
+        if win_amt == 2_000_000_000:
+            hit_jackpot = True
+            break
+
+    if drawings % 156 == 0:
+        years += 1
+        print(f'{years} years')
+
+    if hit_jackpot:
+        break
 
 print(f'Spent: ${total_spent}')
 print(f'Earning: ${earnings}')
